@@ -15,24 +15,14 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-class Humanoid {
-  constructor(createdAt, dimensions, healthPoints, name, team, weapons, language) {
+class GameObject {
+  constructor(createdAt, name, dimensions) {
     this.createdAt = createdAt;
-    this.dimensions = dimensions;
-    this.healthPoints = healthPoints;
     this.name = name;
-    this.team = team;
-    this.weapons = weapons;
-    this.language = language;
+    this.dimensions = dimensions;
   }
-  takeDamage() {
-    return `${ this.name } took damage`;
-  };
   destroy() {
     return `${ this.name } was removed from the game`;
-  };
-  greet() {
-    return `${ this.name } offers a greeting in ${ this.language }`;
   };
 }
 
@@ -42,7 +32,15 @@ class Humanoid {
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-
+class CharacterStats extends GameObject {
+  constructor(charCreatedAt, charName, charDimensions, healthPoints) {
+    super(charCreatedAt, charName, charDimensions);
+    this.healthPoints = healthPoints;
+  }
+  takeDamage() {
+    return `${ this.name } took damage`;
+  };
+}
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -52,7 +50,17 @@ class Humanoid {
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
-
+class Humanoid extends CharacterStats {
+  constructor(huCreatedAt, huName, huDimensions, huHealthPoints, team, weapons, language) {
+    super(huCreatedAt, huName, huDimensions, huHealthPoints);
+    this.team = team;
+    this.weapons = weapons;
+    this.language = language;
+  }
+  greet() {
+    return `${ this.name } offers a greeting in ${ this.language }`;
+  };
+}
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -64,13 +72,13 @@ class Humanoid {
 
 const mage = new Humanoid(
   new Date(),
+  'Bruce',
   {
     length: 2,
     width: 1,
     height: 1,
   },
   5,
-  'Bruce',
   'Mage Guild',
   [
     'Staff of Shamalama',
@@ -80,13 +88,13 @@ const mage = new Humanoid(
 
 const swordsman = new Humanoid(
   new Date(),
+  'Sir Mustachio',
   {
     length: 2,
     width: 2,
     height: 2,
   },
   15,
-  'Sir Mustachio',
   'The Round Table',
   [
     'Giant Sword',
@@ -97,13 +105,13 @@ const swordsman = new Humanoid(
 
 const archer = new Humanoid(
   new Date(),
+  'Lilith',
   {
     length: 1,
     width: 2,
     height: 4,
   },
   10,
-  'Lilith',
   'Forest Kingdom',
   [
     'Bow',
@@ -113,7 +121,7 @@ const archer = new Humanoid(
 );
 
 console.log(mage.createdAt); // Today's date
-console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+console.log(mage.dimensions); // { length: 1, width: 2, height: 4 }
 console.log(swordsman.healthPoints); // 15
 console.log(mage.name); // Bruce
 console.log(swordsman.team); // The Round Table
