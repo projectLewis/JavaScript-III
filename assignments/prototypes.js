@@ -119,19 +119,121 @@ const archer = new Humanoid({
   language: 'Elvish',
 });
 // console.log(mage);
-console.log(mage.createdAt); // Today's date
-console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-console.log(swordsman.healthPoints); // 15
-console.log(mage.name); // Bruce
-console.log(swordsman.team); // The Round Table
-console.log(mage.weapons); // Staff of Shamalama
-console.log(archer.language); // Elvish
-console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-console.log(mage.takeDamage()); // Bruce took damage.
-console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+// console.log(mage.createdAt); // Today's date
+// console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+// console.log(swordsman.healthPoints); // 15
+// console.log(mage.name); // Bruce
+// console.log(swordsman.team); // The Round Table
+// console.log(mage.weapons); // Staff of Shamalama
+// console.log(archer.language); // Elvish
+// console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+// console.log(mage.takeDamage()); // Bruce took damage.
+// console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
-  // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+// Stretch task: 
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+
+function Hero(heroInput) {
+  Humanoid.call(this, heroInput);
+  this.alliance = heroInput.alliance;
+}
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.hook = function (opponent) {
+  opponent.healthPoints -= 5;
+  console.log(`${ this.name } connected with a strong uppercut.`);
+  return damageAssess(opponent);
+}
+Hero.prototype.heal = function (opponent) {
+  this.healthPoints += 3;
+  console.log(`${ this.name } took a sip of some '[trademark]' blue sports water and feels a bit better.`);
+  return selfAssess(this);
+}
+Hero.prototype.pose = function (opponent) {
+  opponent.healthPoints -= 1;
+  console.log(`${ this.name } performed an iconic hero pose. ${ opponent.name } got confused.`);
+  return damageAssess(opponent);
+}
+
+function Villain(vilInput) {
+  Humanoid.call(this, vilInput);
+  this.alliance = vilInput.alliance;
+}
+Villain.prototype = Object.create(Humanoid.prototype);
+Villain.prototype.super = function (opponent) {
+  opponent.healthPoints /= 2;
+  console.log(`${ this.name } unleashed a fury attack. Two piece, biscuits, mumbo sauce and half & half. ${ opponent.name } was not ready for those hands`);
+  return damageAssess(opponent);
+}
+Villain.prototype.cheat = function (opponent) {
+  opponent.healthPoints = 1;
+  console.log(`${ this.name } used a cheat code. ${ opponent.name }'s HP fell all traumatically`);
+  return damageAssess(opponent);
+}
+Villain.prototype.jab = function (opponent) {
+  opponent.healthPoints -= 1;
+  console.log(`${ this.name } struck with a light jab.`)
+  return damageAssess(opponent);
+}
+
+const damageAssess = (challenger) => {
+  if (challenger.healthPoints <= 0) {
+    console.log(`>>>${ challenger.name }'s current health is ${ challenger.healthPoints }.`)
+    return challenger.destroy();
+  } else {
+    return `>>>${ challenger.name }'s current health is ${ challenger.healthPoints }.`;
+  }
+}
+const selfAssess = (self) => {
+  return `>>>${ self.name }'s current health is ${ self.healthPoints }.`
+}
+
+// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+const dark = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 7,
+  name: '"Not the Hero"',
+  team: 'The Brute Squad',
+  weapons: [
+    'these hands',
+  ],
+  language: 'Elvish',
+  alliance: 'bad',
+});
+
+const light = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 30,
+  name: 'Some Guy',
+  team: 'Forest Kingdom',
+  weapons: [
+    'Spirit Fingers',
+    'Big Eyebrows',
+  ],
+  language: 'pig latin',
+  alliance: 'good',
+});
+
+console.log(dark.jab(light));
+console.log(light.heal());
+console.log(dark.super(light));
+console.log(light.heal());
+console.log(light.pose(dark));
+console.log(dark.super(light));
+console.log(dark.jab(light));
+console.log(light.heal());
+console.log(light.heal());
+console.log(dark.cheat(light));
+console.log(dark.jab(light));
