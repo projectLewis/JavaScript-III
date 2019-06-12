@@ -33,12 +33,11 @@ GameObject.prototype.destroy = function () {
 function CharacterStats(charInput) {
   GameObject.call(this, charInput);
   this.healthPoints = charInput.healthPoints;
-  this.takeDamage = charInput.takeDamage;
 }
+CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function () {
   return `${ this.name } took damage`;
 }
-CharacterStats.prototype = Object.create(GameObject.prototype);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -54,12 +53,12 @@ function Humanoid(huInput) {
   this.team = huInput.team;
   this.weapons = huInput.weapons;
   this.language = huInput.language;
-  this.greet = huInput.greet;
 }
+Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function () {
   return `${ this.name } offers a greeting in ${ this.language }`;
 }
-Humanoid.prototype = Object.create(CharacterStats.prototype);
+
 
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
