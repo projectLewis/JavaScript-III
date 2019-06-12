@@ -34,6 +34,7 @@ function CharacterStats(charInput) {
   GameObject.call(this, charInput);
   this.healthPoints = charInput.healthPoints;
 }
+// Object.setPrototypeOf(CharacterStats, GameObject);
 CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function () {
   return `${ this.name } took damage`;
@@ -54,6 +55,7 @@ function Humanoid(huInput) {
   this.weapons = huInput.weapons;
   this.language = huInput.language;
 }
+// Object.setPrototypeOf(Humanoid, CharacterStats);
 Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function () {
   return `${ this.name } offers a greeting in ${ this.language }`;
@@ -134,10 +136,12 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 // Stretch task: 
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
 
+// HERO
 function Hero(heroInput) {
   Humanoid.call(this, heroInput);
   this.alliance = heroInput.alliance;
 }
+// Object.setPrototypeOf(Hero, Humanoid);
 Hero.prototype = Object.create(Humanoid.prototype);
 Hero.prototype.hook = function (opponent) {
   opponent.healthPoints -= 5;
@@ -155,10 +159,12 @@ Hero.prototype.pose = function (opponent) {
   return damageAssess(opponent);
 }
 
+// VILLAIN
 function Villain(vilInput) {
   Humanoid.call(this, vilInput);
   this.alliance = vilInput.alliance;
 }
+// Object.setPrototypeOf(Villain, Humanoid);
 Villain.prototype = Object.create(Humanoid.prototype);
 Villain.prototype.super = function (opponent) {
   opponent.healthPoints /= 2;
